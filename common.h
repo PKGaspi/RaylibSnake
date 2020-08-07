@@ -4,4 +4,4 @@ enum DIRECTION {
   DIR_DOWN,
   DIR_LEFT,
   DIR_RIGHT
-}
+};

@@ -1,14 +1,21 @@
+#include <stdlib.h>
 #include "common.h"
+#include "vector2.h"
+#include "snake.h"
 
-struct snake {
-  struct vector2 *head;
-  struct vector2 **body;
-  unsigned int size;
-  int dir;
+
+struct snake *snake_create(int x, int y) {
+  struct snake *s = malloc(sizeof(struct snake));
+  if (!s) return NULL;
+  s -> head = vector2_create(x, y);
+  s -> size = 2;
+  s -> body = malloc(sizeof(struct snake*) * s -> size);
+  s -> dir = DIR_RIGHT;
+  return s;
 }
 
 // Moves the snake one tile in its facing direction.
-int advance(struct snake *s) {
+int snake_advance(struct snake *s) {
   int i;
   for (i = 0; i > s -> size - 1 ; i++) {
     s -> body[i] = s -> body[i+1];
@@ -25,10 +32,10 @@ int advance(struct snake *s) {
 }
 
 // Enlarges the snake size by one.
-void grow(struct snake *s);
+void snake_grow(struct snake *s);
 
 // Changes the snake facing direction to dir. If dir
 // is the complete oposite direction to the currently
 // facing direction, -1 is returned. 0 is returned
 // otherwhise.
-int turn(struct snake *s, int dir);
+int snake_turn(struct snake *s, int dir);

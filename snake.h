@@ -1,13 +1,20 @@
-struct snake;
+struct snake {
+  struct vector2 *head;
+  struct vector2 **body;
+  unsigned int size;
+  int dir;
+};
+
+struct snake *snake_create(int x, int y);
 
 // Moves the snake one tile in its facing direction.
-int advance(struct snake s);
+int snake_advance(struct snake *s);
 
 // Enlarges the snake size by one.
-void grow(struct snake s);
+void snake_grow(struct snake *s);
 
 // Changes the snake facing direction to dir. If dir
 // is the complete oposite direction to the currently
 // facing direction, -1 is returned. 0 is returned
 // otherwhise.
-int turn(struct snake s, int dir);
+int snake_turn(struct snake *s, int dir);

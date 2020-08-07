@@ -22,6 +22,7 @@
 
 #include <raylib.h>
 #include "snake.h"
+#include "vector2.h"
 
 int main(void)
 {
@@ -30,9 +31,17 @@ int main(void)
     const int screenWidth = 800;
     const int screenHeight = 450;
 
-    InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
+    InitWindow(screenWidth, screenHeight, "Snake");
 
-    SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
+    const unsigned int fieldWidth = 40;
+    const unsigned int fieldHeight = 22;
+
+    const unsigned int tileWidth = screenWidth / fieldWidth;
+    const unsigned int tileHeight = screenHeight / fieldHeight;
+
+    struct snake *player_snake = snake_create(3, 3);
+
+    SetTargetFPS(10);               // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
 
     // Main game loop
@@ -41,6 +50,7 @@ int main(void)
         // Update
         //----------------------------------------------------------------------------------
         // TODO: Update your variables here
+        snake_advance(player_snake);
         //----------------------------------------------------------------------------------
 
         // Draw
@@ -51,6 +61,7 @@ int main(void)
 
             DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
 
+            DrawRectangle(player_snake -> head -> x * tileWidth, player_snake -> head -> y * tileHeight, tileWidth, tileHeight, WHITE);
         EndDrawing();
         //----------------------------------------------------------------------------------
     }
