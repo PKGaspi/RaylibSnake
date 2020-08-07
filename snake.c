@@ -36,6 +36,16 @@ void snake_grow(struct snake *s);
 
 // Changes the snake facing direction to dir. If dir
 // is the complete oposite direction to the currently
-// facing direction, -1 is returned. 0 is returned
-// otherwhise.
-int snake_turn(struct snake *s, int dir);
+// facing direction or the same, -1 is returned. 
+// 0 is returned otherwhise.
+int snake_turn(struct snake *s, int dir) {
+  if ((dir == s -> dir) || 
+    (dir == DIR_LEFT && s -> dir == DIR_RIGHT) ||
+    (dir == DIR_RIGHT && s -> dir == DIR_LEFT) ||
+    (dir == DIR_UP && s -> dir == DIR_DOWN) ||
+    (dir == DIR_DOWN && s -> dir == DIR_UP))  {
+    return -1;
+  }
+  s -> dir = dir;
+  return 0;
+}

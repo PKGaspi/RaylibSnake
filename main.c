@@ -23,6 +23,7 @@
 #include <raylib.h>
 #include "snake.h"
 #include "vector2.h"
+#include "common.h"
 
 int main(void)
 {
@@ -39,9 +40,9 @@ int main(void)
     const unsigned int tileWidth = screenWidth / fieldWidth;
     const unsigned int tileHeight = screenHeight / fieldHeight;
 
-    struct snake *player_snake = snake_create(3, 3);
+    struct snake *player_snake = snake_create(10, 10);
 
-    SetTargetFPS(10);               // Set our game to run at 60 frames-per-second
+    SetTargetFPS(20);               // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
 
     // Main game loop
@@ -50,6 +51,12 @@ int main(void)
         // Update
         //----------------------------------------------------------------------------------
         // TODO: Update your variables here
+        if (IsKeyPressed(KEY_DOWN)) snake_turn(player_snake, DIR_DOWN);
+        else if (IsKeyPressed(KEY_UP)) snake_turn(player_snake, DIR_UP);
+        else if (IsKeyPressed(KEY_RIGHT)) snake_turn(player_snake, DIR_RIGHT);
+        else if (IsKeyPressed(KEY_LEFT)) snake_turn(player_snake, DIR_LEFT);
+
+
         snake_advance(player_snake);
         //----------------------------------------------------------------------------------
 
