@@ -21,6 +21,7 @@ struct snake *snake_create(int x, int y) {
     s -> body[i] = snake_segment_create(x - s -> size + i, y, DIR_RIGHT, GREEN);
   }
   s -> dir = DIR_RIGHT;
+  s -> turn_dir = s -> dir;
   s -> tile_progress = 0;
   return s;
 }
@@ -53,6 +54,8 @@ int snake_advance(struct snake *s) {
     default: return -1;
   }
   s -> tile_progress -= 1;
+  s -> dir = s -> turn_dir;
+  s -> head -> dir = s -> turn_dir;
   return 0;
 }
 
@@ -71,8 +74,7 @@ int snake_turn(struct snake *s, int dir) {
     (dir == DIR_DOWN && s -> dir == DIR_UP))  {
     return -1;
   }
-  s -> dir = dir;
-  s -> head -> dir = dir;
+  s -> turn_dir = dir;
   return 0;
 }
 

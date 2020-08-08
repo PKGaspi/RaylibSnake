@@ -5,6 +5,7 @@ struct snake {
   struct snake_segment **body;
   unsigned int size;
   int dir;
+  int turn_dir;
   float tile_progress;
 };
 
