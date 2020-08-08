@@ -59,6 +59,14 @@ int snake_turn(struct snake *s, int dir) {
   return 0;
 }
 
+int snake_self_collided(struct snake *s) {
+  int i;
+  for (i = 0; i < s -> size; i++) {
+    if (vector2_equals(s -> body[i], s -> head)) return 1;
+  }
+  return 0;
+}
+
 void snake_destroy(struct snake *s) {
   free(s -> head);
   int i;

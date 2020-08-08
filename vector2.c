@@ -23,3 +23,8 @@ int vector2_get_dir(struct vector2 *v) {
 
   return DIR_OTHER;
 }
+
+
+int vector2_equals(struct vector2 *v1, struct vector2 *v2){
+  return v1 -> x == v2 -> x && v1 -> y == v2 -> y;
+}

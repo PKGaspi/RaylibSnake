@@ -19,4 +19,8 @@ void snake_grow(struct snake *s);
 // otherwhise.
 int snake_turn(struct snake *s, int dir);
 
+// Returns 1 if the head and any body position is equal.
+// Returns 0 otherwhise.
+int snake_self_collided(struct snake *s);
+
 void snake_destroy(struct snake *s);
