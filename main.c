@@ -46,7 +46,7 @@ int main(void)
     const int snakeTileWidth = tileWidth - tileWidth / 10;
     const int snakeTileHeight = tileHeight - tileHeight / 10;
 
-    struct snake *player_snake = snake_create(fieldWidth / 2, fieldHeight / 2, 30);
+    struct snake *player_snake = snake_create(fieldWidth / 2, fieldHeight / 2, 3);
     int game_over = 0;
 
     SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
@@ -60,31 +60,21 @@ int main(void)
         // TODO: Update your variables here
         if (!game_over) {
 
-            if (IsKeyPressed(KEY_DOWN)) snake_turn(player_snake, DIR_DOWN);
-            else if (IsKeyPressed(KEY_UP)) snake_turn(player_snake, DIR_UP);
-            else if (IsKeyPressed(KEY_RIGHT)) snake_turn(player_snake, DIR_RIGHT);
-            else if (IsKeyPressed(KEY_LEFT)) snake_turn(player_snake, DIR_LEFT);
+            if (IsKeyDown(KEY_DOWN)) snake_turn(player_snake, DIR_DOWN);
+            else if (IsKeyDown(KEY_UP)) snake_turn(player_snake, DIR_UP);
+            else if (IsKeyDown(KEY_RIGHT)) snake_turn(player_snake, DIR_RIGHT);
+            else if (IsKeyDown(KEY_LEFT)) snake_turn(player_snake, DIR_LEFT);
 
             // Move the snake.
             if (snake_move(player_snake, GetFrameTime())) {
                 snake_advance(player_snake);
+                // Check if we went through a screen border. If so, appear at the other side.
+                if (player_snake -> head -> pos -> x < 0) player_snake -> head -> pos -> x = fieldWidth - 1;
+                else if (player_snake -> head -> pos -> x >= fieldWidth) player_snake -> head -> pos -> x = 0;
+                else if (player_snake -> head -> pos -> y < 0) player_snake -> head -> pos -> y = fieldHeight - 1;
+                else if (player_snake -> head -> pos -> y >= fieldHeight) player_snake -> head -> pos -> y = 0;
             }
 
-            // Check if we went through a screen border. If so, appear at the other side.
-            switch (player_snake -> dir) {
-                case DIR_LEFT:
-                if (player_snake -> head -> pos -> x < 0) player_snake -> head -> pos -> x = fieldWidth - 1;
-                break;
-                case DIR_RIGHT:
-                if (player_snake -> head -> pos -> x >= fieldWidth) player_snake -> head -> pos -> x = 0;
-                break;
-                case DIR_UP:
-                if (player_snake -> head -> pos -> y < 0) player_snake -> head -> pos -> y = fieldHeight - 1;
-                break;
-                case DIR_DOWN:
-                if (player_snake -> head -> pos -> y >= fieldHeight) player_snake -> head -> pos -> y = 0;
-                break;
-            }
 
             if (snake_self_collided(player_snake)) {
                 // Game over.
@@ -102,7 +92,7 @@ int main(void)
 
         ClearBackground(BLACK);
 
-        snake_draw(player_snake, tileWidth, tileHeight, .5);
+        snake_draw(player_snake, tileWidth, tileHeight, fieldWidth, fieldHeight, .5);
 
         if (game_over) DrawText(GAME_OVER_TEXT, screenWidth / 2 - MeasureText(GAME_OVER_TEXT, FONT_SIZE) / 2, 2, FONT_SIZE, MAGENTA);
 

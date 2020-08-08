@@ -35,7 +35,7 @@ int snake_self_collided(struct snake *s);
 
 float snake_get_speed(struct snake *s);
 
-void snake_draw(struct snake *s, int tile_width, int tile_height, float tile_margin);
+void snake_draw(struct snake *s, int tile_width, int tile_height, int field_width, int field_height, float tile_margin);
 
 void snake_free(struct snake *s);
 

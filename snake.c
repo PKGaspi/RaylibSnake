@@ -91,12 +91,12 @@ float snake_get_speed(struct snake *s) {
   return s -> size * SNAKE_BONUS_SPEED + SNAKE_BASE_SPEED;
 }
 
-void snake_draw(struct snake *s, int tile_width, int tile_height, float tile_margin) {
+void snake_draw(struct snake *s, int tile_width, int tile_height, int field_width, int field_height, float size_multiplier) {
   int i;
   for (i = 0; i < s -> size; i++) {
-    snake_segment_draw(s -> body[i], s -> tile_progress, tile_width, tile_height, tile_margin);
+    snake_segment_draw(s -> body[i], s -> tile_progress, tile_width, tile_height, field_width, field_height, size_multiplier);
   }
-  snake_segment_draw(s -> head, s -> tile_progress, tile_width, tile_height, tile_margin);
+  snake_segment_draw(s -> head, s -> tile_progress, tile_width, tile_height, field_width, field_height, size_multiplier);
 }
 
 void snake_free(struct snake *s) {
