@@ -26,11 +26,12 @@ struct snake *snake_create(int x, int y) {
   return s;
 }
 
-void snake_move(struct snake *s, float delta) {
+int snake_move(struct snake *s, float delta) {
   s -> tile_progress += delta * snake_get_speed(s);
   if (s -> tile_progress >= 1) {
-    snake_advance(s);
+    return 1;
   }
+  return 0;
 }
 
 // Moves the snake one tile in its facing direction.

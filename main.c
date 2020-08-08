@@ -63,7 +63,9 @@ int main(void)
             else if (IsKeyPressed(KEY_LEFT)) snake_turn(player_snake, DIR_LEFT);
 
             // Move the snake.
-            snake_move(player_snake, GetFrameTime());
+            if (snake_move(player_snake, GetFrameTime())) {
+                snake_advance(player_snake);
+            }
 
             // Check if we went through a screen border. If so, appear at the other side.
             switch (player_snake -> dir) {
@@ -82,6 +84,8 @@ int main(void)
             }
 
             if (snake_self_collided(player_snake)) {
+                // Game over.
+                player_snake -> tile_progress = 0;
                 game_over = 1;
             }
         }
@@ -95,7 +99,7 @@ int main(void)
 
         ClearBackground(BLACK);
 
-        snake_draw(player_snake, tileWidth, tileHeight, .8);
+        snake_draw(player_snake, tileWidth, tileHeight, .5);
 
         if (game_over) DrawText("Booooooooh! You just lost the game ;)", 190, 200, 20, GRAY);
 

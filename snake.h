@@ -11,8 +11,11 @@ struct snake {
 
 struct snake *snake_create(int x, int y);
 
-// Moves the snake in this tile.
-void snake_move(struct snake *s, float delta);
+// Moves the snake in this tile. If the snake
+// advances to the next tile (tile_progress >= 1),
+// this returns 1 and substracts 1 to tile_progress.
+// Otherwhise, 0 is returned.
+int snake_move(struct snake *s, float delta);
 
 // Moves the snake one tile in its facing direction.
 int snake_advance(struct snake *s);
