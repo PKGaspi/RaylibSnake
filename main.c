@@ -41,8 +41,7 @@ int main(void)
     const unsigned int tileHeight = screenHeight / fieldHeight;
 
     struct snake *player_snake = snake_create(10, 10);
-
-    SetTargetFPS(20);               // Set our game to run at 60 frames-per-second
+    SetTargetFPS(30);               // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
 
     // Main game loop
@@ -66,8 +65,12 @@ int main(void)
 
             ClearBackground(BLACK);
 
-            DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
+            //DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
 
+            int i;
+            for (i = 0; i < player_snake -> size; i++) {
+                DrawRectangle(player_snake -> body[i] -> x * tileWidth, player_snake -> body[i] -> y * tileHeight, tileWidth, tileHeight, GREEN);
+            }
             DrawRectangle(player_snake -> head -> x * tileWidth, player_snake -> head -> y * tileHeight, tileWidth, tileHeight, WHITE);
         EndDrawing();
         //----------------------------------------------------------------------------------
@@ -75,6 +78,7 @@ int main(void)
 
     // De-Initialization
     //--------------------------------------------------------------------------------------
+    snake_destroy(player_snake);
     CloseWindow();        // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
 

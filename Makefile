@@ -2,11 +2,11 @@ CC=gcc
 CFLAGS=-lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 
 
-run: compile exec
+run: clean compile exec
 
 compile: game snake
 
-game: main.c snake.o vector2.o
+game: main.c snake.o vector2.o common.o
 	$(CC) main.c $(CFLAGS) -o game snake.o vector2.o common.o
 
 snake: snake.c
@@ -22,4 +22,4 @@ exec: game
 	./game
 
 clean:
-	rm game
+	rm -f game *.o

@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "common.h"
 #include "vector2.h"
 #include "snake.h"
@@ -8,8 +9,12 @@ struct snake *snake_create(int x, int y) {
   struct snake *s = malloc(sizeof(struct snake));
   if (!s) return NULL;
   s -> head = vector2_create(x, y);
-  s -> size = 2;
-  s -> body = malloc(sizeof(struct snake*) * s -> size);
+  s -> size = 10;
+  s -> body = malloc(sizeof(struct vector2*) * (s -> size));
+  int i;
+  for (i = 0; i < s -> size; i++) {
+    s -> body[i] = vector2_create(x, y);
+  }
   s -> dir = DIR_RIGHT;
   return s;
 }
@@ -17,10 +22,14 @@ struct snake *snake_create(int x, int y) {
 // Moves the snake one tile in its facing direction.
 int snake_advance(struct snake *s) {
   int i;
-  for (i = 0; i > s -> size - 1 ; i++) {
-    s -> body[i] = s -> body[i+1];
+  for (i = 0; i < s -> size - 1; i++) {
+    s -> body[i] -> x = s -> body[i+1] -> x;
+    s -> body[i] -> y = s -> body[i+1] -> y;
   }
-  s -> body[i] = s -> head;
+  if (s -> size > 0) {
+    s -> body[i] -> x = s -> head -> x;
+    s -> body[i] -> y = s -> head -> y;
+  }
   switch (s -> dir) {
     case DIR_UP: s -> head -> y--; break;
     case DIR_DOWN: s -> head -> y++; break;
@@ -48,4 +57,14 @@ int snake_turn(struct snake *s, int dir) {
   }
   s -> dir = dir;
   return 0;
+}
+
+void snake_destroy(struct snake *s) {
+  free(s -> head);
+  int i;
+  for (i = 0; i < s -> size + 1; i++) {
+    free(s -> body[i]);
+  }
+  free(s -> body);
+  free(s);
 }

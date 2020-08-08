@@ -18,3 +18,5 @@ void snake_grow(struct snake *s);
 // facing direction, -1 is returned. 0 is returned
 // otherwhise.
 int snake_turn(struct snake *s, int dir);
+
+void snake_destroy(struct snake *s);
