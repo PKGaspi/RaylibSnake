@@ -40,6 +40,9 @@ int main(void)
     const unsigned int tileWidth = screenWidth / fieldWidth;
     const unsigned int tileHeight = screenHeight / fieldHeight;
 
+    const unsigned int snakeTileWidth = tileWidth - tileWidth / 20;
+    const unsigned int snakeTileHeight = tileHeight - tileHeight / 20;
+
     struct snake *player_snake = snake_create(10, 10);
     SetTargetFPS(30);               // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
@@ -69,9 +72,9 @@ int main(void)
 
             int i;
             for (i = 0; i < player_snake -> size; i++) {
-                DrawRectangle(player_snake -> body[i] -> x * tileWidth, player_snake -> body[i] -> y * tileHeight, tileWidth, tileHeight, GREEN);
+                DrawRectangle(player_snake -> body[i] -> x * tileWidth, player_snake -> body[i] -> y * tileHeight, snakeTileWidth, snakeTileHeight, GREEN);
             }
-            DrawRectangle(player_snake -> head -> x * tileWidth, player_snake -> head -> y * tileHeight, tileWidth, tileHeight, WHITE);
+            DrawRectangle(player_snake -> head -> x * tileWidth, player_snake -> head -> y * tileHeight, snakeTileWidth, snakeTileHeight, WHITE);
         EndDrawing();
         //----------------------------------------------------------------------------------
     }
