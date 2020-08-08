@@ -7,12 +7,12 @@
 float const SNAKE_BASE_SPEED = 2; // Tiles per second.
 float const SNAKE_BONUS_SPEED = .3; // Tiles per second * size.
 
-struct snake *snake_create(int x, int y) {
+struct snake *snake_create(int x, int y, int size) {
 
   struct snake *s = malloc(sizeof(struct snake));
   if (!s) return NULL;
 
-  s -> size = 10;
+  s -> size = size;
   s -> head = snake_segment_create(x, y, DIR_RIGHT, WHITE);
   s -> body = malloc(sizeof(struct snake_segment*) * (s -> size));
 

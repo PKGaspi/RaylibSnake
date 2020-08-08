@@ -46,7 +46,7 @@ int main(void)
     const int snakeTileWidth = tileWidth - tileWidth / 10;
     const int snakeTileHeight = tileHeight - tileHeight / 10;
 
-    struct snake *player_snake = snake_create(fieldWidth / 2, fieldHeight / 2);
+    struct snake *player_snake = snake_create(fieldWidth / 2, fieldHeight / 2, 30);
     int game_over = 0;
 
     SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
