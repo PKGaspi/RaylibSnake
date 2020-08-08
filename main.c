@@ -22,7 +22,6 @@
 
 #include <raylib.h>
 #include "snake.h"
-#include "vector2.h"
 #include "common.h"
 
 int main(void)
@@ -41,13 +40,13 @@ int main(void)
 
     InitWindow(screenWidth, screenHeight, "Snake");
 
-    const int snakeTileWidth = tileWidth - tileWidth / 20;
-    const int snakeTileHeight = tileHeight - tileHeight / 20;
+    const int snakeTileWidth = tileWidth - tileWidth / 10;
+    const int snakeTileHeight = tileHeight - tileHeight / 10;
 
     struct snake *player_snake = snake_create(10, 10);
     int game_over = 0;
 
-    SetTargetFPS(10);               // Set our game to run at 60 frames-per-second
+    SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
 
     // Main game loop
@@ -63,22 +62,22 @@ int main(void)
             else if (IsKeyPressed(KEY_RIGHT)) snake_turn(player_snake, DIR_RIGHT);
             else if (IsKeyPressed(KEY_LEFT)) snake_turn(player_snake, DIR_LEFT);
 
-            // Move the snake one tile.
-            snake_advance(player_snake);
+            // Move the snake.
+            snake_move(player_snake, GetFrameTime());
 
             // Check if we went through a screen border. If so, appear at the other side.
             switch (player_snake -> dir) {
                 case DIR_LEFT:
-                if (player_snake -> head -> x < 0) player_snake -> head -> x = fieldWidth - 1;
+                if (player_snake -> head -> pos -> x < 0) player_snake -> head -> pos -> x = fieldWidth - 1;
                 break;
                 case DIR_RIGHT:
-                if (player_snake -> head -> x > fieldWidth) player_snake -> head -> x = 0;
+                if (player_snake -> head -> pos -> x > fieldWidth) player_snake -> head -> pos -> x = 0;
                 break;
                 case DIR_UP:
-                if (player_snake -> head -> y < 0) player_snake -> head -> y = fieldHeight - 1;
+                if (player_snake -> head -> pos -> y < 0) player_snake -> head -> pos -> y = fieldHeight - 1;
                 break;
                 case DIR_DOWN:
-                if (player_snake -> head -> y > fieldHeight) player_snake -> head -> y = 0;
+                if (player_snake -> head -> pos -> y > fieldHeight) player_snake -> head -> pos -> y = 0;
                 break;
             }
 
@@ -96,11 +95,7 @@ int main(void)
 
         ClearBackground(BLACK);
 
-        int i;
-        for (i = 0; i < player_snake -> size; i++) {
-            DrawRectangle(player_snake -> body[i] -> x * tileWidth, player_snake -> body[i] -> y * tileHeight, snakeTileWidth, snakeTileHeight, GREEN);
-        }
-        DrawRectangle(player_snake -> head -> x * tileWidth, player_snake -> head -> y * tileHeight, snakeTileWidth, snakeTileHeight, WHITE);
+        snake_draw(player_snake, snakeTileWidth, snakeTileHeight);
 
         if (game_over) DrawText("Booooooooh! You just lost the game ;)", 190, 200, 20, GRAY);
 
@@ -111,7 +106,7 @@ int main(void)
 
     // De-Initialization
     //--------------------------------------------------------------------------------------
-    snake_destroy(player_snake);
+    snake_free(player_snake);
     CloseWindow();        // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
 

@@ -1,42 +1,58 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "common.h"
-#include "vector2.h"
 #include "snake.h"
+#include "raylib.h"
 
+float const SNAKE_BASE_SPEED = 2; // Tiles per second.
+float const SNAKE_BONUS_SPEED = .3; // Tiles per second * size.
 
 struct snake *snake_create(int x, int y) {
+
   struct snake *s = malloc(sizeof(struct snake));
   if (!s) return NULL;
-  s -> head = vector2_create(x, y);
+
   s -> size = 10;
-  s -> body = malloc(sizeof(struct vector2*) * (s -> size));
+  s -> head = snake_segment_create(x, y, DIR_RIGHT, WHITE);
+  s -> body = malloc(sizeof(struct snake_segment*) * (s -> size));
+
   int i;
   for (i = 0; i < s -> size; i++) {
-    s -> body[i] = vector2_create(x, y);
+    s -> body[i] = snake_segment_create(x - i-1, y, DIR_RIGHT, GREEN);
   }
   s -> dir = DIR_RIGHT;
+  s -> tile_progress = 0;
   return s;
+}
+
+void snake_move(struct snake *s, float delta) {
+  s -> tile_progress += delta * snake_get_speed(s);
+  if (s -> tile_progress >= 1) {
+    snake_advance(s);
+  }
 }
 
 // Moves the snake one tile in its facing direction.
 int snake_advance(struct snake *s) {
   int i;
   for (i = 0; i < s -> size - 1; i++) {
-    s -> body[i] -> x = s -> body[i+1] -> x;
-    s -> body[i] -> y = s -> body[i+1] -> y;
+    s -> body[i] -> pos -> x = s -> body[i+1] -> pos -> x;
+    s -> body[i] -> pos -> y = s -> body[i+1] -> pos -> y;
+    s -> body[i] -> dir = s -> body[i+1] -> dir;
   }
   if (s -> size > 0) {
-    s -> body[i] -> x = s -> head -> x;
-    s -> body[i] -> y = s -> head -> y;
+    s -> body[i] -> pos -> x = s -> head -> pos -> x;
+    s -> body[i] -> pos -> y = s -> head -> pos -> y;
+    s -> body[i] -> dir = s -> head -> dir;
   }
   switch (s -> dir) {
-    case DIR_UP: s -> head -> y--; break;
-    case DIR_DOWN: s -> head -> y++; break;
-    case DIR_RIGHT: s -> head -> x++; break;
-    case DIR_LEFT: s -> head -> x--; break;
+    case DIR_UP: s -> head -> pos -> y--; break;
+    case DIR_DOWN: s -> head -> pos -> y++; break;
+    case DIR_RIGHT: s -> head -> pos -> x++; break;
+    case DIR_LEFT: s -> head -> pos -> x--; break;
     default: return -1;
   }
+  s -> tile_progress -= 1;
   return 0;
 }
 
@@ -56,22 +72,35 @@ int snake_turn(struct snake *s, int dir) {
     return -1;
   }
   s -> dir = dir;
+  s -> head -> dir = dir;
   return 0;
 }
 
 int snake_self_collided(struct snake *s) {
   int i;
   for (i = 0; i < s -> size; i++) {
-    if (vector2_equals(s -> body[i], s -> head)) return 1;
+    if (vector2_equals(s -> body[i] -> pos, s -> head -> pos)) return 1;
   }
   return 0;
 }
 
-void snake_destroy(struct snake *s) {
-  free(s -> head);
+float snake_get_speed(struct snake *s) {
+  return s -> size * SNAKE_BONUS_SPEED + SNAKE_BASE_SPEED;
+}
+
+void snake_draw(struct snake *s, int tile_width, int tile_height) {
   int i;
-  for (i = 0; i < s -> size + 1; i++) {
-    free(s -> body[i]);
+  for (i = 0; i < s -> size; i++) {
+    snake_segment_draw(s -> body[i], s -> tile_progress, tile_width, tile_height);
+  }
+  snake_segment_draw(s -> head, s -> tile_progress, tile_width, tile_height);
+}
+
+void snake_free(struct snake *s) {
+  snake_segment_free(s -> head);
+  int i;
+  for (i = 0; i < s -> size; i++) {
+    snake_segment_free(s -> body[i]);
   }
   free(s -> body);
   free(s);

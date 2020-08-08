@@ -1,11 +1,17 @@
+#include "snake_segment.h"
+
 struct snake {
-  struct vector2 *head;
-  struct vector2 **body;
+  struct snake_segment *head;
+  struct snake_segment **body;
   unsigned int size;
   int dir;
+  float tile_progress;
 };
 
 struct snake *snake_create(int x, int y);
+
+// Moves the snake in this tile.
+void snake_move(struct snake *s, float delta);
 
 // Moves the snake one tile in its facing direction.
 int snake_advance(struct snake *s);
@@ -23,4 +29,9 @@ int snake_turn(struct snake *s, int dir);
 // Returns 0 otherwhise.
 int snake_self_collided(struct snake *s);
 
-void snake_destroy(struct snake *s);
+float snake_get_speed(struct snake *s);
+
+void snake_draw(struct snake *s, int tile_width, int tile_height);
+
+void snake_free(struct snake *s);
+
