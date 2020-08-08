@@ -95,7 +95,7 @@ int main(void)
 
         ClearBackground(BLACK);
 
-        snake_draw(player_snake, snakeTileWidth, snakeTileHeight);
+        snake_draw(player_snake, tileWidth, tileHeight, .8);
 
         if (game_over) DrawText("Booooooooh! You just lost the game ;)", 190, 200, 20, GRAY);
 
