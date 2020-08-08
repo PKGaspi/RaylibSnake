@@ -29,8 +29,8 @@ int main(void)
     // Initialization
     //--------------------------------------------------------------------------------------
 
-    const int fieldWidth = 40;
-    const int fieldHeight = 22;
+    const int fieldWidth = 30;
+    const int fieldHeight = 20;
 
     const int tileWidth = 20;
     const int tileHeight = 20;
@@ -43,7 +43,7 @@ int main(void)
     const int snakeTileWidth = tileWidth - tileWidth / 10;
     const int snakeTileHeight = tileHeight - tileHeight / 10;
 
-    struct snake *player_snake = snake_create(10, 10);
+    struct snake *player_snake = snake_create(fieldWidth / 2, fieldHeight / 2);
     int game_over = 0;
 
     SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
@@ -73,13 +73,13 @@ int main(void)
                 if (player_snake -> head -> pos -> x < 0) player_snake -> head -> pos -> x = fieldWidth - 1;
                 break;
                 case DIR_RIGHT:
-                if (player_snake -> head -> pos -> x > fieldWidth) player_snake -> head -> pos -> x = 0;
+                if (player_snake -> head -> pos -> x >= fieldWidth) player_snake -> head -> pos -> x = 0;
                 break;
                 case DIR_UP:
                 if (player_snake -> head -> pos -> y < 0) player_snake -> head -> pos -> y = fieldHeight - 1;
                 break;
                 case DIR_DOWN:
-                if (player_snake -> head -> pos -> y > fieldHeight) player_snake -> head -> pos -> y = 0;
+                if (player_snake -> head -> pos -> y >= fieldHeight) player_snake -> head -> pos -> y = 0;
                 break;
             }
 
