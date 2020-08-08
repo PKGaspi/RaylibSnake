@@ -29,6 +29,9 @@ int main(void)
     // Initialization
     //--------------------------------------------------------------------------------------
 
+    const char *GAME_OVER_TEXT = "Game over";
+    const int FONT_SIZE = 20;
+
     const int fieldWidth = 30;
     const int fieldHeight = 20;
 
@@ -101,7 +104,7 @@ int main(void)
 
         snake_draw(player_snake, tileWidth, tileHeight, .5);
 
-        if (game_over) DrawText("Booooooooh! You just lost the game ;)", 190, 200, 20, GRAY);
+        if (game_over) DrawText(GAME_OVER_TEXT, screenWidth / 2 - MeasureText(GAME_OVER_TEXT, FONT_SIZE) / 2, 2, FONT_SIZE, MAGENTA);
 
         EndDrawing();
 
