@@ -29,22 +29,23 @@ int main(void)
 {
     // Initialization
     //--------------------------------------------------------------------------------------
-    const int screenWidth = 800;
-    const int screenHeight = 450;
+
+    const int fieldWidth = 40;
+    const int fieldHeight = 22;
+
+    const int tileWidth = 20;
+    const int tileHeight = 20;
+
+    const int screenWidth = fieldWidth * tileWidth;
+    const int screenHeight = fieldHeight * tileHeight;
 
     InitWindow(screenWidth, screenHeight, "Snake");
 
-    const unsigned int fieldWidth = 40;
-    const unsigned int fieldHeight = 22;
-
-    const unsigned int tileWidth = screenWidth / fieldWidth;
-    const unsigned int tileHeight = screenHeight / fieldHeight;
-
-    const unsigned int snakeTileWidth = tileWidth - tileWidth / 20;
-    const unsigned int snakeTileHeight = tileHeight - tileHeight / 20;
+    const int snakeTileWidth = tileWidth - tileWidth / 20;
+    const int snakeTileHeight = tileHeight - tileHeight / 20;
 
     struct snake *player_snake = snake_create(10, 10);
-    SetTargetFPS(30);               // Set our game to run at 60 frames-per-second
+    SetTargetFPS(10);               // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
 
     // Main game loop
@@ -60,6 +61,21 @@ int main(void)
 
 
         snake_advance(player_snake);
+
+        switch (player_snake -> dir) {
+            case DIR_LEFT:
+                if (player_snake -> head -> x < 0) player_snake -> head -> x = fieldWidth - 1;
+                break;
+            case DIR_RIGHT:
+                if (player_snake -> head -> x > fieldWidth) player_snake -> head -> x = 0;
+                break;
+            case DIR_UP:
+                if (player_snake -> head -> y < 0) player_snake -> head -> y = fieldHeight - 1;
+                break;
+            case DIR_DOWN:
+                if (player_snake -> head -> y > fieldHeight) player_snake -> head -> y = 0;
+                break;
+        }
         //----------------------------------------------------------------------------------
 
         // Draw
