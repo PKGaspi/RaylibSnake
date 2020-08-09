@@ -17,32 +17,32 @@ void snake_segment_draw(struct snake_segment *sg, float offset, int tile_width, 
     x_offset = -offset;
     if (sg -> pos -> x <= 0)
         // Draw extra rectangle on the other side.
-      DrawRectangle((field_width + x_offset) * tile_width + tile_width / 4, (sg -> pos -> y + y_offset) * tile_height + tile_height / 4, tile_width * tile_margin, tile_height * tile_margin, sg -> color);
+      DrawRectangle((field_width + x_offset) * tile_width +( tile_width - tile_width * tile_margin) / 2, (sg -> pos -> y + y_offset) * tile_height + (tile_height - tile_height * tile_margin) / 2, tile_width * tile_margin, tile_height * tile_margin, sg -> color);
     break;
 
     case DIR_RIGHT: 
     x_offset = offset; 
     if (sg -> pos -> x >= field_width - 1)
         // Draw extra rectangle on the other side.
-      DrawRectangle((-1 + x_offset) * tile_width + tile_width / 4, (sg -> pos -> y + y_offset) * tile_height + tile_height / 4, tile_width * tile_margin, tile_height * tile_margin, sg -> color);
+      DrawRectangle((-1 + x_offset) * tile_width +( tile_width - tile_width * tile_margin) / 2, (sg -> pos -> y + y_offset) * tile_height + (tile_height - tile_height * tile_margin) / 2, tile_width * tile_margin, tile_height * tile_margin, sg -> color);
     break;
 
     case DIR_UP: 
     y_offset = -offset; 
     if (sg -> pos -> y <= 0)
         // Draw extra rectangle on the other side.
-      DrawRectangle((sg -> pos -> x + x_offset) * tile_width + tile_width / 4, (field_height + y_offset) * tile_height + tile_height / 4, tile_width * tile_margin, tile_height * tile_margin, sg -> color);
+      DrawRectangle((sg -> pos -> x + x_offset) * tile_width +( tile_width - tile_width * tile_margin) / 2, (field_height + y_offset) * tile_height + (tile_height - tile_height * tile_margin) / 2, tile_width * tile_margin, tile_height * tile_margin, sg -> color);
     break;
 
     case DIR_DOWN: 
     y_offset = offset; 
     if (sg -> pos -> y >= field_height - 1)
         // Draw extra rectangle on the other side.
-      DrawRectangle((sg -> pos -> x + x_offset) * tile_width + tile_width / 4, (-1 + y_offset) * tile_height + tile_height / 4, tile_width * tile_margin, tile_height * tile_margin, sg -> color);
+      DrawRectangle((sg -> pos -> x + x_offset) * tile_width +( tile_width - tile_width * tile_margin) / 2, (-1 + y_offset) * tile_height + (tile_height - tile_height * tile_margin) / 2, tile_width * tile_margin, tile_height * tile_margin, sg -> color);
     break;
 
   }
-  DrawRectangle((sg -> pos -> x + x_offset) * tile_width + tile_width / 4, (sg -> pos -> y + y_offset) * tile_height + tile_height / 4, tile_width * tile_margin, tile_height * tile_margin, sg -> color);
+  DrawRectangle((sg -> pos -> x + x_offset) * tile_width +( tile_width - tile_width * tile_margin) / 2, (sg -> pos -> y + y_offset) * tile_height + (tile_height - tile_height * tile_margin) / 2, tile_width * tile_margin, tile_height * tile_margin, sg -> color);
 
 }
 

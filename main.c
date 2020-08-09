@@ -110,7 +110,7 @@ int main(void)
             ClearBackground(BLACK);
     
             grid_draw(fieldWidth, fieldHeight, tileWidth, tileHeight, GRAY);
-            snake_draw(player_snake, tileWidth, tileHeight, fieldWidth, fieldHeight, .5);
+            snake_draw(player_snake, tileWidth, tileHeight, fieldWidth, fieldHeight, .75);
             fruit_draw(fruit, tileWidth, tileHeight, tileWidth / 3);
     
             if (game_over) DrawText(GAME_OVER_TEXT, screenWidth / 2 - MeasureText(GAME_OVER_TEXT, FONT_SIZE) / 2, 2, FONT_SIZE, MAGENTA);
