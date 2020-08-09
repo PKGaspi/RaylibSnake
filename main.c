@@ -37,6 +37,7 @@ int main(void)
 
     const char *GAME_OVER_TEXT = "Game over";
     const char *VICTORY_TEXT = "Congratulations! You won!";
+    const char *RETRY_TEXT = "Press Enter to start a new game";
     const int FONT_SIZE = 20;
 
     const int fieldWidth = 30;
@@ -53,10 +54,10 @@ int main(void)
     const int snakeTileWidth = tileWidth - tileWidth / 10;
     const int snakeTileHeight = tileHeight - tileHeight / 10;
 
-    struct snake *player_snake = snake_create(fieldWidth / 2, fieldHeight / 2, 3);
-    struct fruit *fruit = fruit_random_create(player_snake, fieldWidth, fieldHeight);
+    struct snake *player_snake = NULL;
+    struct fruit *fruit = NULL;
     
-    int game_over = 0;
+    int game_over = -1;
     int score = 0;
 
 
@@ -68,7 +69,7 @@ int main(void)
     {
         // Update
         //----------------------------------------------------------------------------------
-        // TODO: Update your variables here
+        // Update your variables here
         if (!game_over) {
 
             if (IsKeyDown(KEY_DOWN)) snake_turn(player_snake, DIR_DOWN);
@@ -110,27 +111,47 @@ int main(void)
                 }
             }
         }
+        else {
+            if (IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_ENTER)) {
+                if (player_snake) snake_free(player_snake);
+                if (fruit) fruit_free(fruit);
+                player_snake = snake_create(fieldWidth / 2, fieldHeight / 2, 3);
+                fruit = fruit_random_create(player_snake, fieldWidth, fieldHeight);
+                
+                game_over = 0;
+                score = 0;
+            }
+        }   
         
         //----------------------------------------------------------------------------------
 
         // Draw
         //----------------------------------------------------------------------------------
         BeginDrawing();{
-        
+
             ClearBackground(BLACK);
-    
+
             grid_draw(fieldWidth, fieldHeight, tileWidth, tileHeight, GRAY);
             if (player_snake) snake_draw(player_snake, tileWidth, tileHeight, fieldWidth, fieldHeight, .75);
             if (fruit) fruit_draw(fruit, tileWidth, tileHeight, tileWidth / 3);
-    
+
+            // Texts.
+            
+            // TODO: Points.
+            
+            // Game over or victory text.
             switch (game_over) {
                 case 1: 
-                    DrawText(GAME_OVER_TEXT, screenWidth / 2 - MeasureText(GAME_OVER_TEXT, FONT_SIZE) / 2, 2, FONT_SIZE, MAGENTA);
-                    break;
+                DrawText(GAME_OVER_TEXT, screenWidth / 2 - MeasureText(GAME_OVER_TEXT, FONT_SIZE) / 2, FONT_SIZE + 2, FONT_SIZE, MAGENTA);
+                break;
                 case 2:
-                    DrawText(VICTORY_TEXT, screenWidth / 2 - MeasureText(VICTORY_TEXT, FONT_SIZE) / 2, 2, FONT_SIZE, MAGENTA);
-                    break;
-            } 
+                DrawText(VICTORY_TEXT, screenWidth / 2 - MeasureText(VICTORY_TEXT, FONT_SIZE) / 2, FONT_SIZE + 2, FONT_SIZE, MAGENTA);
+                break;
+            }
+            // New game text.
+            if (game_over) {
+                DrawText(RETRY_TEXT, screenWidth / 2 - MeasureText(RETRY_TEXT, FONT_SIZE) / 2, (FONT_SIZE + 2) * 2, FONT_SIZE, MAGENTA);    
+            }
         }
         EndDrawing();
 
@@ -139,7 +160,8 @@ int main(void)
 
     // De-Initialization
     //--------------------------------------------------------------------------------------
-    snake_free(player_snake);
+    if (player_snake) snake_free(player_snake);
+    if (fruit) fruit_free(fruit);
     CloseWindow();        // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
 
