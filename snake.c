@@ -5,7 +5,7 @@
 #include "raylib.h"
 
 float const SNAKE_BASE_SPEED = 3; // Tiles per second.
-float const SNAKE_BONUS_SPEED = .2; // Tiles per second * size.
+float const SNAKE_BONUS_SPEED = .22; // Tiles per second * size.
 
 struct snake *snake_create(int x, int y, int size) {
 
