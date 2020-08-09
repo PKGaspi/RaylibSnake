@@ -135,7 +135,7 @@ int main(void)
             grid_draw(fieldWidth, fieldHeight, tileWidth, tileHeight, BLACK);
 
             if (player_snake) snake_draw(player_snake, tileWidth, tileHeight, fieldWidth, fieldHeight, .75);
-            if (fruit) fruit_draw(fruit, tileWidth, tileHeight, tileWidth / 2.9);
+            if (fruit) fruit_draw(fruit, tileWidth, tileHeight, tileWidth / 3.2);
 
             // Texts.
             
