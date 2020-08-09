@@ -11,7 +11,6 @@ struct snake_segment *snake_segment_create(int x, int y, int dir, Color color) {
 }
 
 void snake_segment_draw(struct snake_segment *sg, float offset, int tile_width, int tile_height, int field_width, int field_height, float tile_margin) {
-
   float x_offset = 0, y_offset = 0;
   switch (sg -> dir) {
     case DIR_LEFT: 

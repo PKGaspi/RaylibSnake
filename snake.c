@@ -61,7 +61,14 @@ int snake_advance(struct snake *s) {
 }
 
 // Enlarges the snake size by one.
-void snake_grow(struct snake *s);
+void snake_grow(struct snake *s) {
+  struct snake_segment **tmp = realloc(s -> body, sizeof(struct snake_segment*) * (s -> size + 1));
+  if (tmp) {
+    tmp[s -> size] = snake_segment_create(s -> head -> pos -> x, s -> head -> pos -> y, s -> dir, GREEN);
+    s -> size++;
+    s -> body = tmp;
+  }
+}
 
 // Changes the snake facing direction to dir. If dir
 // is the complete oposite direction to the currently

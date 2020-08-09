@@ -47,9 +47,12 @@ int main(void)
     const int snakeTileWidth = tileWidth - tileWidth / 10;
     const int snakeTileHeight = tileHeight - tileHeight / 10;
 
-    struct snake *player_snake = snake_create(fieldWidth / 2, fieldHeight / 2, 20);
+    struct snake *player_snake = snake_create(fieldWidth / 2, fieldHeight / 2, 2);
     struct fruit *fruit = fruit_create(GetRandomValue(0, fieldWidth-1), GetRandomValue(0, fieldHeight-1));
+    
     int game_over = 0;
+    int score = 0;
+
 
     SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
@@ -85,30 +88,30 @@ int main(void)
                     player_snake -> tile_progress = 0;
                     game_over = 1;
                 }
-                // TODO: Check if the snake ate a fruit.
-                else if (0) {
-
+                // Check if the snake ate a fruit.
+                else if (vector2_equals(player_snake -> head -> pos, fruit -> pos)) {
+                    // Eat fruit.
+                    snake_grow(player_snake);
+                    score++;
+                    fruit_free(fruit);
+                    fruit = fruit_create(GetRandomValue(0, fieldWidth-1), GetRandomValue(0, fieldHeight-1));
                 }
             }
-
-
-
         }
-        // Check collision with myself.
         
         //----------------------------------------------------------------------------------
 
         // Draw
         //----------------------------------------------------------------------------------
-        BeginDrawing();
-
-        ClearBackground(BLACK);
-
-        snake_draw(player_snake, tileWidth, tileHeight, fieldWidth, fieldHeight, .5);
-        fruit_draw(fruit, tileWidth, tileHeight, tileWidth / 3);
-
-        if (game_over) DrawText(GAME_OVER_TEXT, screenWidth / 2 - MeasureText(GAME_OVER_TEXT, FONT_SIZE) / 2, 2, FONT_SIZE, MAGENTA);
-
+        BeginDrawing();{
+        
+            ClearBackground(BLACK);
+    
+            snake_draw(player_snake, tileWidth, tileHeight, fieldWidth, fieldHeight, .5);
+            fruit_draw(fruit, tileWidth, tileHeight, tileWidth / 3);
+    
+            if (game_over) DrawText(GAME_OVER_TEXT, screenWidth / 2 - MeasureText(GAME_OVER_TEXT, FONT_SIZE) / 2, 2, FONT_SIZE, MAGENTA);
+        }
         EndDrawing();
 
         //----------------------------------------------------------------------------------
