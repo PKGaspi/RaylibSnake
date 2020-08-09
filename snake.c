@@ -4,8 +4,8 @@
 #include "snake.h"
 #include "raylib.h"
 
-float const SNAKE_BASE_SPEED = 2; // Tiles per second.
-float const SNAKE_BONUS_SPEED = .3; // Tiles per second * size.
+float const SNAKE_BASE_SPEED = 3; // Tiles per second.
+float const SNAKE_BONUS_SPEED = .2; // Tiles per second * size.
 
 struct snake *snake_create(int x, int y, int size) {
 
@@ -13,12 +13,12 @@ struct snake *snake_create(int x, int y, int size) {
   if (!s) return NULL;
 
   s -> size = size;
-  s -> head = snake_segment_create(x, y, DIR_RIGHT, WHITE);
+  s -> head = snake_segment_create(x, y, DIR_RIGHT, GREEN);
   s -> body = malloc(sizeof(struct snake_segment*) * (s -> size));
 
   int i;
   for (i = 0; i < s -> size; i++) {
-    s -> body[i] = snake_segment_create(x - (i+1), y, DIR_RIGHT, GREEN);
+    s -> body[i] = snake_segment_create(x - (i+1), y, DIR_RIGHT, LIME);
   }
   s -> dir = DIR_RIGHT;
   s -> turn_dir = s -> dir;
@@ -67,10 +67,10 @@ void snake_grow(struct snake *s) {
   if (tmp) {
     switch (tmp[s -> size - 1] -> dir) {
       case DIR_UP: 
-        tmp[s -> size] = snake_segment_create(tmp[s -> size - 1] -> pos -> x, tmp[s -> size - 1] -> pos -> y - 1, tmp[s -> size - 1] -> dir, tmp[s -> size - 1] -> color);
+        tmp[s -> size] = snake_segment_create(tmp[s -> size - 1] -> pos -> x, tmp[s -> size - 1] -> pos -> y + 1, tmp[s -> size - 1] -> dir, tmp[s -> size - 1] -> color);
         break;
       case DIR_DOWN: 
-        tmp[s -> size] = snake_segment_create(tmp[s -> size - 1] -> pos -> x, tmp[s -> size - 1] -> pos -> y + 1, tmp[s -> size - 1] -> dir, tmp[s -> size - 1] -> color);
+        tmp[s -> size] = snake_segment_create(tmp[s -> size - 1] -> pos -> x, tmp[s -> size - 1] -> pos -> y - 1, tmp[s -> size - 1] -> dir, tmp[s -> size - 1] -> color);
         break;
       case DIR_LEFT: 
         tmp[s -> size] = snake_segment_create(tmp[s -> size - 1] -> pos -> x + 1, tmp[s -> size - 1] -> pos -> y, tmp[s -> size - 1] -> dir, tmp[s -> size - 1] -> color);
