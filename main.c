@@ -24,6 +24,9 @@
 #include "snake.h"
 #include "fruit.h"
 #include "common.h"
+#include <stdlib.h>
+
+struct fruit *fruit_random_create(struct snake *s, int fieldWidth, int fieldHeight);
 
 void grid_draw(int fieldWidth, int fieldHeight, int tileWidth, int tileHeight, Color color);
 
@@ -35,8 +38,8 @@ int main(void)
     const char *GAME_OVER_TEXT = "Game over";
     const int FONT_SIZE = 20;
 
-    const int fieldWidth = 30;
-    const int fieldHeight = 20;
+    const int fieldWidth = 10;
+    const int fieldHeight = 1;
 
     const int tileWidth = 20;
     const int tileHeight = 20;
@@ -49,8 +52,8 @@ int main(void)
     const int snakeTileWidth = tileWidth - tileWidth / 10;
     const int snakeTileHeight = tileHeight - tileHeight / 10;
 
-    struct snake *player_snake = snake_create(fieldWidth / 2, fieldHeight / 2, 10);
-    struct fruit *fruit = fruit_create(GetRandomValue(0, fieldWidth-1), GetRandomValue(0, fieldHeight-1));
+    struct snake *player_snake = snake_create(fieldWidth / 2, fieldHeight / 2, 3);
+    struct fruit *fruit = fruit_random_create(player_snake, fieldWidth, fieldHeight);
     
     int game_over = 0;
     int score = 0;
@@ -96,7 +99,13 @@ int main(void)
                     snake_grow(player_snake);
                     score++;
                     fruit_free(fruit);
-                    fruit = fruit_create(GetRandomValue(0, fieldWidth-1), GetRandomValue(0, fieldHeight-1));
+                    fruit = NULL;
+                    if (player_snake -> size + 1 >= fieldHeight * fieldWidth) {
+                        game_over = 2;
+                    }
+                    else {
+                        fruit = fruit_random_create(player_snake, fieldWidth, fieldHeight);
+                    }
                 }
             }
         }
@@ -110,8 +119,8 @@ int main(void)
             ClearBackground(BLACK);
     
             grid_draw(fieldWidth, fieldHeight, tileWidth, tileHeight, GRAY);
-            snake_draw(player_snake, tileWidth, tileHeight, fieldWidth, fieldHeight, .75);
-            fruit_draw(fruit, tileWidth, tileHeight, tileWidth / 3);
+            if (player_snake) snake_draw(player_snake, tileWidth, tileHeight, fieldWidth, fieldHeight, .75);
+            if (fruit) fruit_draw(fruit, tileWidth, tileHeight, tileWidth / 3);
     
             if (game_over) DrawText(GAME_OVER_TEXT, screenWidth / 2 - MeasureText(GAME_OVER_TEXT, FONT_SIZE) / 2, 2, FONT_SIZE, MAGENTA);
         }
@@ -127,6 +136,21 @@ int main(void)
     //--------------------------------------------------------------------------------------
 
     return 0;
+}
+
+struct fruit *fruit_random_create(struct snake *s, int fieldWidth, int fieldHeight) {
+    struct vector2 *v = vector2_create(GetRandomValue(0, fieldWidth - 1), GetRandomValue(0, fieldHeight - 1));
+    int i;
+    if (vector2_equals(v, s -> head -> pos)) {
+        return fruit_random_create(s, fieldWidth, fieldHeight);
+    }
+    for (i = 0; i < s -> size; i++) {
+        if (vector2_equals(v, s -> body[i] -> pos)) {
+            return fruit_random_create(s, fieldWidth, fieldHeight);
+        }
+    }
+    struct fruit *f = fruit_create(v -> x, v -> y);
+    return f;
 }
 
 void grid_draw(int fieldWidth, int fieldHeight, int tileWidth, int tileHeight, Color color) {
