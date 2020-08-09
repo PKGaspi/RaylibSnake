@@ -44,8 +44,8 @@ int main(void)
     const int fieldWidth = 30;
     const int fieldHeight = 20;
 
-    const int tileWidth = 20;
-    const int tileHeight = 20;
+    const int tileWidth = 35;
+    const int tileHeight = 35;
 
     const int screenWidth = fieldWidth * tileWidth;
     const int screenHeight = fieldHeight * tileHeight;
@@ -116,7 +116,7 @@ int main(void)
             if (IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_ENTER)) {
                 if (player_snake) snake_free(player_snake);
                 if (fruit) fruit_free(fruit);
-                player_snake = snake_create(fieldWidth / 2, fieldHeight / 2, 3);
+                player_snake = snake_create(fieldWidth / 2, fieldHeight / 2, 2);
                 fruit = fruit_random_create(player_snake, fieldWidth, fieldHeight);
                 
                 game_over = 0;
@@ -130,12 +130,12 @@ int main(void)
         //----------------------------------------------------------------------------------
         BeginDrawing();{
 
-            ClearBackground(BLACK);
+            ClearBackground(DARKGRAY);
 
             grid_draw(fieldWidth, fieldHeight, tileWidth, tileHeight, GRAY);
-            
+
             if (player_snake) snake_draw(player_snake, tileWidth, tileHeight, fieldWidth, fieldHeight, .75);
-            if (fruit) fruit_draw(fruit, tileWidth, tileHeight, tileWidth / 3);
+            if (fruit) fruit_draw(fruit, tileWidth, tileHeight, tileWidth / 2.9);
 
             // Texts.
             
