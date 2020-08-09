@@ -36,10 +36,11 @@ int main(void)
     //--------------------------------------------------------------------------------------
 
     const char *GAME_OVER_TEXT = "Game over";
+    const char *VICTORY_TEXT = "Congratulations! You won!";
     const int FONT_SIZE = 20;
 
-    const int fieldWidth = 10;
-    const int fieldHeight = 1;
+    const int fieldWidth = 30;
+    const int fieldHeight = 20;
 
     const int tileWidth = 20;
     const int tileHeight = 20;
@@ -122,7 +123,14 @@ int main(void)
             if (player_snake) snake_draw(player_snake, tileWidth, tileHeight, fieldWidth, fieldHeight, .75);
             if (fruit) fruit_draw(fruit, tileWidth, tileHeight, tileWidth / 3);
     
-            if (game_over) DrawText(GAME_OVER_TEXT, screenWidth / 2 - MeasureText(GAME_OVER_TEXT, FONT_SIZE) / 2, 2, FONT_SIZE, MAGENTA);
+            switch (game_over) {
+                case 1: 
+                    DrawText(GAME_OVER_TEXT, screenWidth / 2 - MeasureText(GAME_OVER_TEXT, FONT_SIZE) / 2, 2, FONT_SIZE, MAGENTA);
+                    break;
+                case 2:
+                    DrawText(VICTORY_TEXT, screenWidth / 2 - MeasureText(VICTORY_TEXT, FONT_SIZE) / 2, 2, FONT_SIZE, MAGENTA);
+                    break;
+            } 
         }
         EndDrawing();
 
