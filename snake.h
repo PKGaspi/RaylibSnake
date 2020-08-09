@@ -11,7 +11,7 @@ struct snake {
   float tile_progress;
 };
 
-struct snake *snake_create(int x, int y, int size);
+struct snake *snake_create(int x, int y, int size, int dir, Color head_color, Color body_color);
 
 // Moves the snake in this tile. If the snake
 // advances to the next tile (tile_progress >= 1),

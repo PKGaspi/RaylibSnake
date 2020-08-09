@@ -8,21 +8,28 @@ float const SNAKE_BASE_SPEED = 3; // Tiles per second.
 float const SNAKE_BONUS_SPEED = .22; // Tiles per second * size.
 float const SNAKE_MAX_SPEED = 20;
 
-struct snake *snake_create(int x, int y, int size) {
+struct snake *snake_create(int x, int y, int size, int dir, Color head_color, Color body_color) {
 
   struct snake *s = malloc(sizeof(struct snake));
   if (!s) return NULL;
 
   s -> size = size;
-  s -> head = snake_segment_create(x, y, DIR_RIGHT, GREEN);
+  s -> head = snake_segment_create(x, y, dir, head_color);
   s -> body = malloc(sizeof(struct snake_segment*) * (s -> size));
 
+  int x_dir = 0, y_dir = 0;
+  switch (dir) {
+    case DIR_UP: y_dir = 1; break;
+    case DIR_DOWN: y_dir = -1; break;
+    case DIR_RIGHT: x_dir = -1; break;
+    case DIR_LEFT: x_dir = 1; break;
+  }
   int i;
   for (i = 0; i < s -> size; i++) {
-    s -> body[i] = snake_segment_create(x - (i+1), y, DIR_RIGHT, LIME);
+    s -> body[i] = snake_segment_create(x + (i+1) * x_dir, y + (i+1) * y_dir, dir, body_color);
   }
-  s -> dir = DIR_RIGHT;
-  s -> turn_dir = s -> dir;
+  s -> dir = dir;
+  s -> turn_dir = dir;
   s -> tile_progress = 0;
   return s;
 }

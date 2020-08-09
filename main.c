@@ -26,6 +26,8 @@
 #include "common.h"
 #include <stdlib.h>
 
+struct snake *snake_random_create(int size, int fieldWidth, int fieldHeight, Color head_color, Color body_color);
+
 struct fruit *fruit_random_create(struct snake *s, int fieldWidth, int fieldHeight);
 
 void grid_draw(int fieldWidth, int fieldHeight, int tileWidth, int tileHeight, Color color);
@@ -116,7 +118,7 @@ int main(void)
             if (IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_ENTER)) {
                 if (player_snake) snake_free(player_snake);
                 if (fruit) fruit_free(fruit);
-                player_snake = snake_create(fieldWidth / 2, fieldHeight / 2, 2);
+                player_snake = snake_random_create(2, fieldWidth, fieldHeight, GREEN, LIME);
                 fruit = fruit_random_create(player_snake, fieldWidth, fieldHeight);
                 
                 game_over = 0;
@@ -173,6 +175,15 @@ int main(void)
     return 0;
 }
 
+struct snake *snake_random_create(int size, int fieldWidth, int fieldHeight, Color head_color, Color body_color) {
+    struct vector2 *v = vector2_create(GetRandomValue(0, fieldWidth - 1), GetRandomValue(0, fieldHeight - 1));
+    int dir = GetRandomValue(DIR_UP, DIR_RIGHT);
+    struct snake *s = snake_create(v -> x, v -> y, size, dir, head_color, body_color);
+
+    free(v);
+    return s;
+}
+
 struct fruit *fruit_random_create(struct snake *s, int fieldWidth, int fieldHeight) {
     struct vector2 *v = vector2_create(GetRandomValue(0, fieldWidth - 1), GetRandomValue(0, fieldHeight - 1));
     int i;
@@ -185,6 +196,7 @@ struct fruit *fruit_random_create(struct snake *s, int fieldWidth, int fieldHeig
         }
     }
     struct fruit *f = fruit_create(v -> x, v -> y);
+    free(v);
     return f;
 }
 
