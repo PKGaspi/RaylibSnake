@@ -73,10 +73,10 @@ int main(void)
         // Update your variables here
         if (!game_over) {
 
-            if (IsKeyDown(KEY_DOWN)) snake_turn(player_snake, DIR_DOWN);
-            else if (IsKeyDown(KEY_UP)) snake_turn(player_snake, DIR_UP);
-            else if (IsKeyDown(KEY_RIGHT)) snake_turn(player_snake, DIR_RIGHT);
-            else if (IsKeyDown(KEY_LEFT)) snake_turn(player_snake, DIR_LEFT);
+            if (IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S)) snake_turn(player_snake, DIR_DOWN);
+            else if (IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)) snake_turn(player_snake, DIR_UP);
+            else if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)) snake_turn(player_snake, DIR_RIGHT);
+            else if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A)) snake_turn(player_snake, DIR_LEFT);
 
             // Move the snake.
             if (snake_move(player_snake, GetFrameTime())) {
@@ -132,7 +132,7 @@ int main(void)
 
             ClearBackground(DARKGRAY);
 
-            grid_draw(fieldWidth, fieldHeight, tileWidth, tileHeight, GRAY);
+            grid_draw(fieldWidth, fieldHeight, tileWidth, tileHeight, BLACK);
 
             if (player_snake) snake_draw(player_snake, tileWidth, tileHeight, fieldWidth, fieldHeight, .75);
             if (fruit) fruit_draw(fruit, tileWidth, tileHeight, tileWidth / 2.9);
