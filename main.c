@@ -25,6 +25,8 @@
 #include "fruit.h"
 #include "common.h"
 
+void grid_draw(int fieldWidth, int fieldHeight, int tileWidth, int tileHeight, Color color);
+
 int main(void)
 {
     // Initialization
@@ -107,6 +109,7 @@ int main(void)
         
             ClearBackground(BLACK);
     
+            grid_draw(fieldWidth, fieldHeight, tileWidth, tileHeight, GRAY);
             snake_draw(player_snake, tileWidth, tileHeight, fieldWidth, fieldHeight, .5);
             fruit_draw(fruit, tileWidth, tileHeight, tileWidth / 3);
     
@@ -124,4 +127,16 @@ int main(void)
     //--------------------------------------------------------------------------------------
 
     return 0;
+}
+
+void grid_draw(int fieldWidth, int fieldHeight, int tileWidth, int tileHeight, Color color) {
+
+    int i;
+    for (i = 0; i < fieldWidth; i++) {
+        DrawLine(i * tileWidth, 0, i * tileWidth, fieldHeight * tileHeight, color);
+    }
+    for (i = 0; i < fieldHeight; i++) {
+        DrawLine(0, i * tileHeight, fieldWidth * tileWidth, i * tileHeight, color);
+    }
+
 }

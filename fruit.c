@@ -14,7 +14,7 @@ struct fruit *fruit_create(int x, int y) {
 }
 
 void fruit_draw(struct fruit *f, int tileWidth, int tileHeight, float radious) {
-  DrawCircle(f -> pos -> x * tileWidth + tileWidth / 4, f -> pos -> y * tileHeight + tileHeight / 4, radious, f -> color);
+  DrawCircle(f -> pos -> x * tileWidth + tileWidth / 2, f -> pos -> y * tileHeight + tileHeight / 2, radious, f -> color);
 }
 
 void fruit_free(struct fruit *f) {
