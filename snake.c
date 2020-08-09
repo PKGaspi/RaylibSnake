@@ -6,6 +6,7 @@
 
 float const SNAKE_BASE_SPEED = 3; // Tiles per second.
 float const SNAKE_BONUS_SPEED = .22; // Tiles per second * size.
+float const SNAKE_MAX_SPEED = 20;
 
 struct snake *snake_create(int x, int y, int size) {
 
@@ -110,7 +111,7 @@ int snake_self_collided(struct snake *s) {
 }
 
 float snake_get_speed(struct snake *s) {
-  return s -> size * SNAKE_BONUS_SPEED + SNAKE_BASE_SPEED;
+  return min(s -> size * SNAKE_BONUS_SPEED + SNAKE_BASE_SPEED, SNAKE_MAX_SPEED);
 }
 
 void snake_draw(struct snake *s, int tile_width, int tile_height, int field_width, int field_height, float size_multiplier) {
