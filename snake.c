@@ -18,7 +18,7 @@ struct snake *snake_create(int x, int y, int size) {
 
   int i;
   for (i = 0; i < s -> size; i++) {
-    s -> body[i] = snake_segment_create(x, y, DIR_RIGHT, GREEN);
+    s -> body[i] = snake_segment_create(x - (i+1), y, DIR_RIGHT, GREEN);
   }
   s -> dir = DIR_RIGHT;
   s -> turn_dir = s -> dir;
@@ -37,16 +37,17 @@ int snake_move(struct snake *s, float delta) {
 // Moves the snake one tile in its facing direction.
 int snake_advance(struct snake *s) {
   int i;
-  for (i = 0; i < s -> size - 1; i++) {
-    s -> body[i] -> pos -> x = s -> body[i+1] -> pos -> x;
-    s -> body[i] -> pos -> y = s -> body[i+1] -> pos -> y;
-    s -> body[i] -> dir = s -> body[i+1] -> dir;
+  for (i = s -> size - 1; i > 0; i--) {
+    s -> body[i] -> pos -> x = s -> body[i-1] -> pos -> x;
+    s -> body[i] -> pos -> y = s -> body[i-1] -> pos -> y;
+    s -> body[i] -> dir = s -> body[i-1] -> dir;
   }
   if (s -> size > 0) {
-    s -> body[i] -> pos -> x = s -> head -> pos -> x;
-    s -> body[i] -> pos -> y = s -> head -> pos -> y;
-    s -> body[i] -> dir = s -> head -> dir;
+    s -> body[0] -> pos -> x = s -> head -> pos -> x;
+    s -> body[0] -> pos -> y = s -> head -> pos -> y;
+    s -> body[0] -> dir = s -> head -> dir;
   }
+
   switch (s -> dir) {
     case DIR_UP: s -> head -> pos -> y--; break;
     case DIR_DOWN: s -> head -> pos -> y++; break;
@@ -64,7 +65,21 @@ int snake_advance(struct snake *s) {
 void snake_grow(struct snake *s) {
   struct snake_segment **tmp = realloc(s -> body, sizeof(struct snake_segment*) * (s -> size + 1));
   if (tmp) {
-    tmp[s -> size] = snake_segment_create(s -> head -> pos -> x, s -> head -> pos -> y, s -> dir, GREEN);
+    switch (tmp[s -> size - 1] -> dir) {
+      case DIR_UP: 
+        tmp[s -> size] = snake_segment_create(tmp[s -> size - 1] -> pos -> x, tmp[s -> size - 1] -> pos -> y - 1, tmp[s -> size - 1] -> dir, tmp[s -> size - 1] -> color);
+        break;
+      case DIR_DOWN: 
+        tmp[s -> size] = snake_segment_create(tmp[s -> size - 1] -> pos -> x, tmp[s -> size - 1] -> pos -> y + 1, tmp[s -> size - 1] -> dir, tmp[s -> size - 1] -> color);
+        break;
+      case DIR_LEFT: 
+        tmp[s -> size] = snake_segment_create(tmp[s -> size - 1] -> pos -> x + 1, tmp[s -> size - 1] -> pos -> y, tmp[s -> size - 1] -> dir, tmp[s -> size - 1] -> color);
+        break;
+      case DIR_RIGHT: 
+        tmp[s -> size] = snake_segment_create(tmp[s -> size - 1] -> pos -> x - 1, tmp[s -> size - 1] -> pos -> y, tmp[s -> size - 1] -> dir, tmp[s -> size - 1] -> color);
+        break;
+    }
+    
     s -> size++;
     s -> body = tmp;
   }

@@ -1,5 +1,7 @@
 #include "snake_segment.h"
 
+// body[0] is the closest body part to the head (neck).
+// body[size-1] is the farthes body part to the head (tail).
 struct snake {
   struct snake_segment *head;
   struct snake_segment **body;

@@ -47,7 +47,7 @@ int main(void)
     const int snakeTileWidth = tileWidth - tileWidth / 10;
     const int snakeTileHeight = tileHeight - tileHeight / 10;
 
-    struct snake *player_snake = snake_create(fieldWidth / 2, fieldHeight / 2, 2);
+    struct snake *player_snake = snake_create(fieldWidth / 2, fieldHeight / 2, 10);
     struct fruit *fruit = fruit_create(GetRandomValue(0, fieldWidth-1), GetRandomValue(0, fieldHeight-1));
     
     int game_over = 0;
