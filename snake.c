@@ -18,7 +18,7 @@ struct snake *snake_create(int x, int y, int size) {
 
   int i;
   for (i = 0; i < s -> size; i++) {
-    s -> body[i] = snake_segment_create(x - s -> size + i, y, DIR_RIGHT, GREEN);
+    s -> body[i] = snake_segment_create(x, y, DIR_RIGHT, GREEN);
   }
   s -> dir = DIR_RIGHT;
   s -> turn_dir = s -> dir;

@@ -6,8 +6,8 @@ run: clean compile exec
 
 compile: game snake
 
-game: main.c snake.o vector2.o common.o snake_segment.o
-	$(CC) main.c $(CFLAGS) -o game snake.o vector2.o common.o snake_segment.o
+game: main.c snake.o vector2.o common.o snake_segment.o fruit.o
+	$(CC) main.c $(CFLAGS) -o game snake.o vector2.o common.o snake_segment.o fruit.o
 
 snake: snake.c
 	$(CC) -c snake.c
@@ -20,6 +20,9 @@ common: common.c
 
 snake_segment: snake_segment.c
 	$(CC) -c snake_segment.c
+
+fruit: fruit.c
+	$(CC) -c fruit.c
 
 exec: game
 	./game

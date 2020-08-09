@@ -22,6 +22,7 @@
 
 #include <raylib.h>
 #include "snake.h"
+#include "fruit.h"
 #include "common.h"
 
 int main(void)
@@ -46,7 +47,8 @@ int main(void)
     const int snakeTileWidth = tileWidth - tileWidth / 10;
     const int snakeTileHeight = tileHeight - tileHeight / 10;
 
-    struct snake *player_snake = snake_create(fieldWidth / 2, fieldHeight / 2, 3);
+    struct snake *player_snake = snake_create(fieldWidth / 2, fieldHeight / 2, 20);
+    struct fruit *fruit = fruit_create(GetRandomValue(0, fieldWidth-1), GetRandomValue(0, fieldHeight-1));
     int game_over = 0;
 
     SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
@@ -67,20 +69,30 @@ int main(void)
 
             // Move the snake.
             if (snake_move(player_snake, GetFrameTime())) {
-                snake_advance(player_snake);
+
+                snake_advance(player_snake); // Advance one tile.
+
                 // Check if we went through a screen border. If so, appear at the other side.
                 if (player_snake -> head -> pos -> x < 0) player_snake -> head -> pos -> x = fieldWidth - 1;
                 else if (player_snake -> head -> pos -> x >= fieldWidth) player_snake -> head -> pos -> x = 0;
                 else if (player_snake -> head -> pos -> y < 0) player_snake -> head -> pos -> y = fieldHeight - 1;
                 else if (player_snake -> head -> pos -> y >= fieldHeight) player_snake -> head -> pos -> y = 0;
+
+
+                // Check if the snake dies.
+                if (snake_self_collided(player_snake)) {
+                    // Game over.
+                    player_snake -> tile_progress = 0;
+                    game_over = 1;
+                }
+                // TODO: Check if the snake ate a fruit.
+                else if (0) {
+
+                }
             }
 
 
-            if (snake_self_collided(player_snake)) {
-                // Game over.
-                player_snake -> tile_progress = 0;
-                game_over = 1;
-            }
+
         }
         // Check collision with myself.
         
@@ -93,6 +105,7 @@ int main(void)
         ClearBackground(BLACK);
 
         snake_draw(player_snake, tileWidth, tileHeight, fieldWidth, fieldHeight, .5);
+        fruit_draw(fruit, tileWidth, tileHeight, tileWidth / 3);
 
         if (game_over) DrawText(GAME_OVER_TEXT, screenWidth / 2 - MeasureText(GAME_OVER_TEXT, FONT_SIZE) / 2, 2, FONT_SIZE, MAGENTA);
 
