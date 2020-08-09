@@ -80,33 +80,36 @@ int main(void)
             // Move the snake.
             if (snake_move(player_snake, GetFrameTime())) {
 
-                snake_advance(player_snake); // Advance one tile.
+                while (player_snake -> tile_progress >= 1) { // This while is for low frame rate cases.
+                    snake_advance(player_snake); // Advance one tile.
+                
 
-                // Check if we went through a screen border. If so, appear at the other side.
-                if (player_snake -> head -> pos -> x < 0) player_snake -> head -> pos -> x = FIELD_WIDTH - 1;
-                else if (player_snake -> head -> pos -> x >= FIELD_WIDTH) player_snake -> head -> pos -> x = 0;
-                else if (player_snake -> head -> pos -> y < 0) player_snake -> head -> pos -> y = FIELD_HEIGHT - 1;
-                else if (player_snake -> head -> pos -> y >= FIELD_HEIGHT) player_snake -> head -> pos -> y = 0;
+                    // Check if we went through a screen border. If so, appear at the other side.
+                    if (player_snake -> head -> pos -> x < 0) player_snake -> head -> pos -> x = FIELD_WIDTH - 1;
+                    else if (player_snake -> head -> pos -> x >= FIELD_WIDTH) player_snake -> head -> pos -> x = 0;
+                    else if (player_snake -> head -> pos -> y < 0) player_snake -> head -> pos -> y = FIELD_HEIGHT - 1;
+                    else if (player_snake -> head -> pos -> y >= FIELD_HEIGHT) player_snake -> head -> pos -> y = 0;
 
 
-                // Check if the snake dies.
-                if (snake_self_collided(player_snake)) {
-                    // Game over.
-                    player_snake -> tile_progress = 0;
-                    game_over = 1;
-                }
-                // Check if the snake ate a fruit.
-                else if (vector2_equals(player_snake -> head -> pos, fruit -> pos)) {
-                    // Eat fruit.
-                    snake_grow(player_snake);
-                    score++;
-                    fruit_free(fruit);
-                    fruit = NULL;
-                    if (player_snake -> size + 1 >= FIELD_HEIGHT * FIELD_WIDTH) {
-                        game_over = 2;
+                    // Check if the snake dies.
+                    if (snake_self_collided(player_snake)) {
+                        // Game over.
+                        player_snake -> tile_progress = 0;
+                        game_over = 1;
                     }
-                    else {
-                        fruit = fruit_random_create(player_snake, FIELD_WIDTH, FIELD_HEIGHT);
+                    // Check if the snake ate a fruit.
+                    else if (vector2_equals(player_snake -> head -> pos, fruit -> pos)) {
+                        // Eat fruit.
+                        snake_grow(player_snake);
+                        score++;
+                        fruit_free(fruit);
+                        fruit = NULL;
+                        if (player_snake -> size + 1 >= FIELD_HEIGHT * FIELD_WIDTH) {
+                            game_over = 2;
+                        }
+                        else {
+                            fruit = fruit_random_create(player_snake, FIELD_WIDTH, FIELD_HEIGHT);
+                        }
                     }
                 }
             }
