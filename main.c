@@ -35,6 +35,7 @@ int main(void)
     // Initialization
     //--------------------------------------------------------------------------------------
 
+    const char *SCORE_TEXT = "Score: %i";
     const char *GAME_OVER_TEXT = "Game over";
     const char *VICTORY_TEXT = "Congratulations! You won!";
     const char *RETRY_TEXT = "Press Enter to start a new game";
@@ -132,13 +133,17 @@ int main(void)
             ClearBackground(BLACK);
 
             grid_draw(fieldWidth, fieldHeight, tileWidth, tileHeight, GRAY);
+            
             if (player_snake) snake_draw(player_snake, tileWidth, tileHeight, fieldWidth, fieldHeight, .75);
             if (fruit) fruit_draw(fruit, tileWidth, tileHeight, tileWidth / 3);
 
             // Texts.
             
-            // TODO: Points.
-            
+            // Points.
+            if (game_over >= 0) {
+                const char * score_text = TextFormat(SCORE_TEXT, score);
+                DrawText(score_text, screenWidth / 2 - MeasureText(score_text, FONT_SIZE) / 2, 0, FONT_SIZE, MAGENTA);  
+            }
             // Game over or victory text.
             switch (game_over) {
                 case 1: 
