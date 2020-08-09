@@ -37,6 +37,7 @@ int main(void)
     // Initialization
     //--------------------------------------------------------------------------------------
 
+    const char *PAUSE_TEXT = "Game paused";
     const char *SCORE_TEXT = "Score: %i";
     const char *GAME_OVER_TEXT = "Game over";
     const char *VICTORY_TEXT = "Congratulations! You won!";
@@ -60,6 +61,7 @@ int main(void)
     struct snake *player_snake = NULL;
     struct fruit *fruit = NULL;
     
+    int pause = 0;
     int game_over = -1;
     int score = 0;
 
@@ -73,7 +75,10 @@ int main(void)
         // Update
         //----------------------------------------------------------------------------------
         // Update your variables here
-        if (!game_over) {
+        if (IsKeyPressed(KEY_P) && !game_over) pause = !pause;
+
+        if (!game_over && !pause) {
+
 
             if (IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S)) snake_turn(player_snake, DIR_DOWN);
             else if (IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)) snake_turn(player_snake, DIR_UP);
@@ -140,6 +145,9 @@ int main(void)
             if (fruit) fruit_draw(fruit, tileWidth, tileHeight, tileWidth / 3.2);
 
             // Texts.
+            
+            // Pause.
+            if (pause) DrawText(PAUSE_TEXT, screenWidth / 2 - MeasureText(PAUSE_TEXT, FONT_SIZE) / 2, (screenHeight - FONT_SIZE) / 2, FONT_SIZE, MAGENTA);
             
             // Points.
             if (game_over >= 0) {
