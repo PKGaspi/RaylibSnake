@@ -2,9 +2,9 @@ CC=gcc
 CFLAGS=-lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 
 
-run: clean compile exec
+run: compile exec
 
-compile: game snake
+compile: game
 
 game: main.c snake.o vector2.o common.o snake_segment.o fruit.o
 	$(CC) main.c $(CFLAGS) -o game snake.o vector2.o common.o snake_segment.o fruit.o
