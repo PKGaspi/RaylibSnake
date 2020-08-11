@@ -1,5 +1,5 @@
 # RaylibSnake
-This is just another average snake clone made with [Raylib](www.raylib.com/).
+This is just another average snake clone made with [Raylib](http://www.raylib.com/).
 
 ## Build and run
 
