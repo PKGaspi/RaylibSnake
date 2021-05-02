@@ -7,7 +7,7 @@ This is just another average snake clone made with [Raylib](http://www.raylib.co
 Using Make:
 
 ```
-git clone https://github.com/rapsaGnauJ/RaylibSnake.git
+git clone https://github.com/PKGaspi/RaylibSnake.git
 cd RaylibSnake
 make
 ```
